@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>관리자 대시보드 — 화성시 자유주제 정책연구모임</title>
+<style>
+:root {
+  --bg:       #0a0e1a;
+  --surface:  #111827;
+  --surface2: #1a2235;
+  --border:   rgba(79,142,247,0.18);
+  --accent:   #4f8ef7;
+  --accent2:  #7eb3ff;
+  --text:     #e2ecf8;
+  --muted:    #8aa5c8;
+  --danger:   #ef4444;
+  --danger2:  #fca5a5;
+  --success:  #22c55e;
+  --gold:     #f59e0b;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;}
+
+/* ── AUTH MODAL ── */
+#auth-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+}
+.auth-box{
+  background:var(--surface);border:1px solid var(--border);border-radius:16px;
+  padding:2.5rem 2rem;width:360px;text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+}
+.auth-logo{font-size:28px;margin-bottom:.5rem;}
+.auth-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:.3rem;}
+.auth-sub{font-size:13px;color:var(--muted);margin-bottom:1.75rem;}
+.auth-box input[type=password]{
+  width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:8px;
+  background:var(--surface2);color:var(--text);font-size:15px;outline:none;
+  transition:border-color .2s;margin-bottom:1rem;
+}
+.auth-box input[type=password]:focus{border-color:var(--accent);}
+.auth-box button{
+  width:100%;padding:11px;border:none;border-radius:8px;
+  background:var(--accent);color:#fff;font-size:15px;font-weight:600;cursor:pointer;
+  transition:background .15s;
+}
+.auth-box button:hover{background:var(--accent2);}
+
+/* ── LAYOUT ── */
+#app{display:none;min-height:100vh;flex-direction:column;}
+#app.show{display:flex;}
+
+header{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;
+}
+.h-logo{font-size:15px;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:8px;}
+.h-badge{
+  font-size:11px;background:rgba(79,142,247,0.15);border:1px solid rgba(79,142,247,0.35);
+  color:var(--accent);padding:2px 8px;border-radius:4px;letter-spacing:.05em;
+}
+.h-logout{
+  font-size:13px;color:var(--muted);background:none;border:1px solid var(--border);
+  border-radius:6px;padding:5px 12px;cursor:pointer;transition:all .15s;
+}
+.h-logout:hover{color:var(--danger2);border-color:rgba(239,68,68,0.4);}
+
+main{flex:1;padding:1.75rem 2rem;max-width:1200px;margin:0 auto;width:100%;}
+
+/* ── TABS ── */
+.tab-bar{display:flex;gap:6px;margin-bottom:1.75rem;border-bottom:1px solid var(--border);padding-bottom:0;}
+.tab-btn{
+  padding:9px 20px;font-size:13px;font-weight:600;
+  border:none;border-bottom:2px solid transparent;border-radius:0;
+  background:none;color:var(--muted);cursor:pointer;transition:all .15s;
+  margin-bottom:-1px;
+}
+.tab-btn:hover{color:var(--accent2);}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+/* ── SECTION CARD ── */
+.card{
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:1.5rem;margin-bottom:1.5rem;
+}
+.card-title{
+  font-size:14px;font-weight:700;color:var(--accent2);
+  margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;
+}
+
+/* ── TABLE ── */
+.tbl-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;}
+th{font-size:12px;font-weight:600;color:var(--muted);background:var(--surface2);}
+td{font-size:13px;color:var(--text);}
+tr:hover td{background:rgba(79,142,247,0.04);}
+.td-title{white-space:normal;max-width:260px;}
+.badge{
+  display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;
+}
+.badge-imp{background:rgba(245,158,11,0.15);color:var(--gold);}
+.badge-new{background:rgba(79,142,247,0.15);color:var(--accent2);}
+.badge-gen{background:rgba(138,165,200,0.12);color:var(--muted);}
+.badge-pin{background:rgba(34,197,94,0.12);color:var(--success);}
+
+/* ── FORM ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.form-grid.full{grid-template-columns:1fr;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group label{font-size:12px;font-weight:600;color:var(--muted);}
+.form-group input,
+.form-group select,
+.form-group textarea{
+  padding:9px 12px;border:1px solid var(--border);border-radius:7px;
+  background:var(--surface2);color:var(--text);font-size:13px;
+  font-family:inherit;outline:none;transition:border-color .2s;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{border-color:var(--accent);}
+.form-group textarea{resize:vertical;min-height:80px;}
+.form-group select option{background:var(--surface2);}
+.check-row{display:flex;align-items:center;gap:8px;padding-top:1.5rem;}
+.check-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--accent);cursor:pointer;}
+.check-row label{font-size:13px;color:var(--text);cursor:pointer;}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  padding:7px 16px;border:none;border-radius:7px;font-size:13px;font-weight:600;
+  cursor:pointer;transition:all .15s;font-family:inherit;
+}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:var(--accent2);}
+.btn-sm{padding:4px 10px;font-size:12px;}
+.btn-edit{background:rgba(79,142,247,0.12);color:var(--accent2);border:1px solid rgba(79,142,247,0.25);}
+.btn-edit:hover{background:rgba(79,142,247,0.22);}
+.btn-del{background:rgba(239,68,68,0.1);color:var(--danger2);border:1px solid rgba(239,68,68,0.2);}
+.btn-del:hover{background:rgba(239,68,68,0.22);}
+.btn-cancel{background:var(--surface2);color:var(--muted);border:1px solid var(--border);}
+.btn-cancel:hover{color:var(--text);}
+.form-actions{display:flex;gap:8px;margin-top:1.25rem;justify-content:flex-end;}
+
+/* ── STAT ROW ── */
+.stat-row{display:flex;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap;}
+.stat-box{
+  flex:1;min-width:140px;background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;padding:.875rem 1.125rem;
+}
+.stat-label{font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:600;}
+.stat-val{font-size:20px;font-weight:700;color:var(--text);}
+.stat-val.accent{color:var(--accent);}
+.stat-val.danger{color:var(--danger2);}
+.stat-val.success{color:var(--success);}
+
+/* ── SELECT ── */
+.team-select-wrap{margin-bottom:1.25rem;display:flex;align-items:center;gap:.75rem;}
+.team-select-wrap label{font-size:13px;font-weight:600;color:var(--muted);white-space:nowrap;}
+.team-select-wrap select{
+  padding:8px 12px;border:1px solid var(--border);border-radius:7px;
+  background:var(--surface2);color:var(--text);font-size:13px;font-family:inherit;outline:none;
+  min-width:200px;transition:border-color .2s;
+}
+.team-select-wrap select:focus{border-color:var(--accent);}
+.team-select-wrap select option{background:var(--surface2);}
+
+/* ── TOAST ── */
+#toast{
+  position:fixed;bottom:2rem;right:2rem;z-index:999;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:.875rem 1.25rem;font-size:13px;
+  box-shadow:0 8px 30px rgba(0,0,0,0.4);
+  transform:translateY(20px);opacity:0;pointer-events:none;
+  transition:all .25s ease;max-width:320px;
+}
+#toast.show{transform:translateY(0);opacity:1;}
+#toast.ok{border-color:rgba(34,197,94,0.4);color:var(--success);}
+#toast.err{border-color:rgba(239,68,68,0.4);color:var(--danger2);}
+
+/* ── EDIT MODAL ── */
+#edit-modal-overlay{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;padding:1rem;
+}
+#edit-modal-overlay.open{display:flex;}
+.edit-modal{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:1.75rem;width:100%;max-width:560px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  max-height:90vh;overflow-y:auto;
+}
+.edit-modal-title{
+  font-size:15px;font-weight:700;color:var(--accent2);
+  margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);
+}
+.empty-row td{text-align:center;color:var(--muted);padding:2rem;}
+
+/* ── SUBMISSION TOGGLE BOXES ── */
+.sub-toggle-box{
+  padding:8px 12px;border-radius:8px;cursor:pointer;
+  border:1px solid var(--border);text-align:center;
+  font-size:12px;font-weight:600;user-select:none;
+  transition:all .15s;min-width:72px;line-height:1.5;
+}
+.sub-toggle-box span{display:block;font-size:11px;font-weight:400;}
+.sub-toggle-box.s-none{background:rgba(138,165,200,0.08);color:var(--muted);}
+.sub-toggle-box.s-delay{background:rgba(245,158,11,0.15);color:var(--gold);border-color:rgba(245,158,11,0.35);}
+.sub-toggle-box.s-done{background:rgba(34,197,94,0.15);color:var(--success);border-color:rgba(34,197,94,0.35);}
+.sub-toggle-box:hover{border-color:var(--accent);}
+
+/* ── SUB PICKER POPUP ── */
+#sub-picker{
+  position:fixed;z-index:700;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:10px;box-shadow:0 8px 30px rgba(0,0,0,0.55);
+  display:none;flex-direction:column;gap:6px;min-width:170px;
+}
+#sub-picker.open{display:flex;}
+.sp-opt{
+  padding:8px 12px;border:1px solid var(--border);border-radius:7px;
+  background:var(--surface2);color:var(--text);font-size:13px;font-weight:600;
+  cursor:pointer;text-align:left;transition:all .15s;font-family:inherit;
+}
+.sp-opt:hover{border-color:var(--accent);color:var(--accent2);}
+.sp-opt.done{background:rgba(34,197,94,0.1);color:var(--success);border-color:rgba(34,197,94,0.3);}
+.sp-opt.done:hover{background:rgba(34,197,94,0.2);}
+.sp-delay-row{display:flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid var(--border);border-radius:7px;background:var(--surface2);}
+.sp-delay-row span{font-size:13px;font-weight:600;color:var(--gold);}
+.sp-delay-row input{
+  width:46px;padding:4px 6px;border:1px solid var(--border);border-radius:5px;
+  background:var(--bg);color:var(--text);font-size:13px;text-align:center;outline:none;
+}
+.sp-delay-row input:focus{border-color:var(--gold);}
+.sp-delay-row .sp-unit{font-size:12px;color:var(--muted);font-weight:400;}
+.sp-delay-row .sp-confirm{
+  padding:3px 9px;border:1px solid rgba(245,158,11,0.35);border-radius:5px;
+  background:rgba(245,158,11,0.12);color:var(--gold);font-size:12px;font-weight:600;
+  cursor:pointer;font-family:inherit;transition:all .15s;margin-left:auto;
+}
+.sp-delay-row .sp-confirm:hover{background:rgba(245,158,11,0.25);}
+
+/* ── SUB MINI (inline table) ── */
+.sub-mini-wrap{display:flex;gap:4px;flex-wrap:wrap;}
+.sub-mini{
+  display:inline-flex;flex-direction:column;align-items:center;
+  padding:4px 7px;border-radius:6px;cursor:pointer;
+  border:1px solid var(--border);font-size:11px;font-weight:600;
+  user-select:none;transition:all .12s;min-width:42px;line-height:1.35;
+  white-space:nowrap;
+}
+.sub-mini span{display:block;font-size:10px;font-weight:400;}
+.sub-mini.s-none{background:rgba(138,165,200,0.06);color:var(--muted);}
+.sub-mini.s-delay{background:rgba(245,158,11,0.12);color:var(--gold);border-color:rgba(245,158,11,0.3);}
+.sub-mini.s-done{background:rgba(34,197,94,0.12);color:var(--success);border-color:rgba(34,197,94,0.3);}
+.sub-mini:hover{border-color:var(--accent);}
+
+/* ── DATE PARTS ── */
+.date-parts{display:flex;align-items:center;gap:4px;}
+.date-parts input{
+  padding:9px 6px;border:1px solid var(--border);border-radius:7px;
+  background:var(--surface2);color:var(--text);font-size:13px;
+  font-family:'IBM Plex Mono',monospace;text-align:center;outline:none;
+  transition:border-color .2s;
+}
+.date-parts input:focus{border-color:var(--accent);}
+.date-parts .sep{color:var(--muted);font-weight:700;}
+</style>
+</head>
+<body>
+
+<!-- AUTH MODAL -->
+<div id="auth-overlay">
+  <div class="auth-box">
+    <div class="auth-logo">🛡️</div>
+    <div class="auth-title">관리자 로그인</div>
+    <div class="auth-sub">화성시 자유주제 정책연구모임</div>
+    <input type="password" id="pw-input" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button onclick="doLogin()">로그인</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <header>
+    <div class="h-logo">
+      ⚙️ 관리자 대시보드
+      <span class="h-badge">ADMIN</span>
+    </div>
+    <button class="h-logout" onclick="logout()">로그아웃</button>
+  </header>
+
+  <main>
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('notices',this)">📋 공지사항 관리</button>
+      <button class="tab-btn" onclick="switchTab('activities',this)">📊 연구모임 활동 관리</button>
+      <button class="tab-btn" onclick="switchTab('teams',this)">🏷️ 모임 정보 관리</button>
+      <button class="tab-btn" onclick="switchTab('content',this)">📅 사이드바 콘텐츠</button>
+    </div>
+
+    <!-- ── TAB 1: 공지사항 ── -->
+    <div id="tab-notices">
+
+      <!-- 새 공지 추가 -->
+      <div class="card">
+        <div class="card-title">✏️ 새 공지사항 추가</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>제목 *</label>
+            <input type="text" id="n-title" placeholder="공지 제목"/>
+          </div>
+          <div class="form-group">
+            <label>카테고리</label>
+            <select id="n-cat">
+              <option value="일반">일반</option>
+              <option value="중요">중요</option>
+              <option value="신규">신규</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-grid full" style="margin-top:1rem">
+          <div class="form-group">
+            <label>내용 *</label>
+            <textarea id="n-content" rows="4" placeholder="공지 내용 (HTML 태그 사용 가능: &lt;strong&gt;, &lt;span class=&quot;highlight&quot;&gt;, &lt;span class=&quot;warn&quot;&gt;)"></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <div class="check-row" style="margin-top:0">
+            <input type="checkbox" id="n-pin"/>
+            <label for="n-pin">핀 고정 (상단 노출)</label>
+          </div>
+          <button class="btn btn-primary" onclick="createNotice()">+ 공지 추가</button>
+        </div>
+      </div>
+
+      <!-- 공지 목록 -->
+      <div class="card">
+        <div class="card-title">📋 공지사항 목록</div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:40px">#</th>
+                <th>제목</th>
+                <th style="width:80px">카테고리</th>
+                <th style="width:70px">핀고정</th>
+                <th style="width:110px">등록일</th>
+                <th style="width:130px">관리</th>
+              </tr>
+            </thead>
+            <tbody id="notice-tbody">
+              <tr class="empty-row"><td colspan="6">로딩 중...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB 2: 활동 관리 ── -->
+    <div id="tab-activities" style="display:none">
+
+      <!-- 팀 선택 -->
+      <div class="team-select-wrap">
+        <label>팀 선택</label>
+        <select id="team-select" onchange="loadActivities()">
+          <option value="">팀을 선택하세요</option>
+        </select>
+      </div>
+
+      <!-- 통계 -->
+      <div class="stat-row" id="act-stats" style="display:none">
+        <div class="stat-box">
+          <div class="stat-label">총 지원금액</div>
+          <div class="stat-val">300,000원</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">총 사용금액</div>
+          <div class="stat-val accent" id="stat-used">0원</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">잔액</div>
+          <div class="stat-val success" id="stat-balance">300,000원</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">활동 건수</div>
+          <div class="stat-val" id="stat-count">0건</div>
+        </div>
+      </div>
+
+      <!-- 새 활동 추가 -->
+      <div class="card" id="act-form-card" style="display:none">
+        <div class="card-title">➕ 새 활동 추가</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>활동 날짜 *</label>
+            <div class="date-parts">
+              <input type="text" id="a-y" maxlength="4" placeholder="YYYY" style="width:56px" inputmode="numeric" oninput="dpInput(this,2000,2099,4)"/>
+              <span class="sep">-</span>
+              <input type="text" id="a-m" maxlength="2" placeholder="MM"   style="width:40px" inputmode="numeric" oninput="dpInput(this,1,12,2)"/>
+              <span class="sep">-</span>
+              <input type="text" id="a-d" maxlength="2" placeholder="DD"   style="width:40px" inputmode="numeric" oninput="dpInput(this,1,31,2)"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>제목 *</label>
+            <input type="text" id="a-title" placeholder="활동명"/>
+          </div>
+          <div class="form-group">
+            <label>참석 인원</label>
+            <input type="text" id="a-attendees" placeholder="0" inputmode="numeric" oninput="fmtNumInput(this)"/>
+          </div>
+          <div class="form-group">
+            <label>사용금액 (원)</label>
+            <input type="text" id="a-amount" placeholder="0" inputmode="numeric" oninput="fmtNumInput(this)"/>
+          </div>
+        </div>
+        <div class="form-grid full" style="margin-top:1rem">
+          <div class="form-group">
+            <label>내용 / 메모</label>
+            <textarea id="a-desc" rows="3" placeholder="활동 내용, 비고 등"></textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" onclick="createActivity()">+ 활동 추가</button>
+        </div>
+      </div>
+
+      <!-- 활동 목록 -->
+      <div class="card" id="act-list-card" style="display:none">
+        <div class="card-title">📊 활동 내역</div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:110px">날짜</th>
+                <th>제목</th>
+                <th style="width:80px">참석인원</th>
+                <th style="width:110px">사용금액</th>
+                <th style="width:130px">관리</th>
+              </tr>
+            </thead>
+            <tbody id="act-tbody">
+              <tr class="empty-row"><td colspan="5">팀을 선택하세요</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── TAB 3: 모임 정보 관리 ── -->
+    <div id="tab-teams" style="display:none">
+      <div class="card">
+        <div class="card-title">🏷️ 모임명 · 연구과제 관리</div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th style="width:40px">번호</th>
+                <th style="width:110px">모임명</th>
+                <th>연구과제</th>
+                <th>월별 제출현황</th>
+                <th style="width:70px">관리</th>
+              </tr>
+            </thead>
+            <tbody id="team-tbody">
+              <tr class="empty-row"><td colspan="5">로딩 중...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TAB 4: 사이드바 콘텐츠 ── -->
+    <div id="tab-content" style="display:none">
+
+      <!-- 활동관리카드 제출 일정 -->
+      <div class="card">
+        <div class="card-title">📅 활동관리카드 제출 일정표</div>
+        <div id="sched-rows"></div>
+        <button class="btn btn-sm btn-edit" style="margin-top:.75rem" onclick="addSchedRow()">+ 행 추가</button>
+        <div class="form-actions" style="margin-top:1rem">
+          <button class="btn btn-primary" onclick="saveSchedule()">저장</button>
+        </div>
+      </div>
+
+      <!-- 주요 일정 -->
+      <div class="card">
+        <div class="card-title">🗓️ 주요 일정 (타임라인)</div>
+        <div id="timeline-rows"></div>
+        <button class="btn btn-sm btn-edit" style="margin-top:.75rem" onclick="addTimelineRow()">+ 항목 추가</button>
+        <div class="form-actions" style="margin-top:1rem">
+          <button class="btn btn-primary" onclick="saveTimeline()">저장</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- EDIT MODAL -->
+<div id="edit-modal-overlay">
+  <div class="edit-modal">
+    <div class="edit-modal-title">✏️ 공지사항 수정</div>
+    <input type="hidden" id="em-id"/>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>제목 *</label>
+        <input type="text" id="em-title" placeholder="공지 제목"/>
+      </div>
+      <div class="form-group">
+        <label>카테고리</label>
+        <select id="em-cat">
+          <option value="일반">일반</option>
+          <option value="중요">중요</option>
+          <option value="신규">신규</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-grid full" style="margin-top:1rem">
+      <div class="form-group">
+        <label>내용 *</label>
+        <textarea id="em-content" rows="6" placeholder="공지 내용"></textarea>
+      </div>
+    </div>
+    <div class="form-actions" style="margin-top:1rem">
+      <div class="check-row" style="margin-top:0">
+        <input type="checkbox" id="em-pin"/>
+        <label for="em-pin">핀 고정 (상단 노출)</label>
+      </div>
+      <button class="btn btn-cancel" onclick="closeEditModal()">취소</button>
+      <button class="btn btn-primary" onclick="saveEditNotice()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM EDIT MODAL -->
+<div id="team-modal-overlay" style="position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:1rem;">
+  <div class="edit-modal">
+    <div class="edit-modal-title">🏷️ 모임 정보 수정</div>
+    <input type="hidden" id="tm-id"/>
+    <div class="form-grid full">
+      <div class="form-group">
+        <label>모임명 *</label>
+        <input type="text" id="tm-name" placeholder="모임명"/>
+      </div>
+    </div>
+    <div class="form-grid full" style="margin-top:1rem">
+      <div class="form-group">
+        <label>연구과제 *</label>
+        <textarea id="tm-task" rows="3" placeholder="연구과제 제목"></textarea>
+      </div>
+    </div>
+    <div class="form-grid full" style="margin-top:1rem">
+      <div class="form-group">
+        <label>월별 활동관리카드 제출 현황</label>
+        <div id="tm-subs-grid" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"></div>
+      </div>
+    </div>
+    <div class="form-actions" style="margin-top:1rem">
+      <button class="btn btn-cancel" onclick="closeTeamModal()">취소</button>
+      <button class="btn btn-primary" onclick="saveTeam()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUB PICKER -->
+<div id="sub-picker">
+  <button class="sp-opt" onclick="setSubState('')">— 미제출</button>
+  <button class="sp-opt done" onclick="setSubState('완료')">✔ 제출완료</button>
+  <div class="sp-delay-row">
+    <span>⏱ 지연</span>
+    <input type="text" id="sub-delay-days" maxlength="3" placeholder="0" inputmode="numeric"
+      oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+      onkeydown="if(event.key==='Enter')confirmDelay()"/>
+    <span class="sp-unit">일</span>
+    <button class="sp-confirm" onclick="confirmDelay()">확인</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+const API    = 'https://hwaseong-free-api.onrender.com';
+const LS_KEY = 'free_admin_key';
+
+let _key = localStorage.getItem(LS_KEY) || '';
+
+// ─── AUTH ───
+async function doLogin() {
+  const val = document.getElementById('pw-input').value.trim();
+  if (!val) return;
+  try {
+    const res = await fetch(API + '/api/notices', { headers: { 'x-admin-key': val } });
+    if (res.status === 401) {
+      alert('비밀번호가 올바르지 않습니다.');
+      document.getElementById('pw-input').value = '';
+      return;
+    }
+    _key = val;
+    localStorage.setItem(LS_KEY, val);
+    showApp();
+  } catch {
+    alert('서버에 연결할 수 없습니다.');
+  }
+}
+
+function logout() {
+  localStorage.removeItem(LS_KEY);
+  _key = '';
+  location.reload();
+}
+
+function showApp() {
+  document.getElementById('auth-overlay').style.display = 'none';
+  document.getElementById('app').classList.add('show');
+  loadNotices();
+  loadTeams();
+}
+
+if (_key) showApp();
+
+// ─── TOAST ───
+let _toastTimer;
+function toast(msg, type='ok') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `show ${type}`;
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => el.className = '', 3000);
+}
+
+// ─── TABS ───
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-notices').style.display    = name === 'notices'    ? '' : 'none';
+  document.getElementById('tab-activities').style.display = name === 'activities' ? '' : 'none';
+  document.getElementById('tab-teams').style.display      = name === 'teams'      ? '' : 'none';
+  document.getElementById('tab-content').style.display    = name === 'content'    ? '' : 'none';
+  if (name === 'teams')   renderTeamManageTable();
+  if (name === 'content') loadContentTab();
+}
+
+// ─── API HELPERS ───
+async function apiFetch(path, method='GET', body=null) {
+  const opts = {
+    method,
+    headers: { 'Content-Type': 'application/json', 'x-admin-key': _key },
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(API + path, opts);
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.detail || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+function fmt(n) { return Number(n||0).toLocaleString('ko-KR') + '원'; }
+
+function dpInput(el, min, max, digits) {
+  el.value = el.value.replace(/[^0-9]/g, '');
+  if (el.value.length === digits) {
+    const n = parseInt(el.value, 10);
+    if (n > max) el.value = String(max).padStart(digits === 2 ? 2 : 4, '0');
+    if (n < min) el.value = String(min).padStart(digits === 2 ? 2 : 4, '0');
+  }
+}
+
+function getDateVal(yId, mId, dId) {
+  const y = document.getElementById(yId).value.padStart(4, '0');
+  const m = document.getElementById(mId).value.padStart(2, '0');
+  const d = document.getElementById(dId).value.padStart(2, '0');
+  if (!y || !m || !d || y === '0000') return '';
+  return `${y}-${m}-${d}`;
+}
+
+function fmtNumInput(el) {
+  const pos = el.selectionStart;
+  const before = el.value.length;
+  const raw = el.value.replace(/[^0-9]/g, '');
+  el.value = raw ? Number(raw).toLocaleString('ko-KR') : '';
+  const diff = el.value.length - before;
+  el.setSelectionRange(pos + diff, pos + diff);
+}
+function parseNum(val) {
+  return parseInt((val || '').replace(/[^0-9]/g, '')) || 0;
+}
+function fmtDate(s) {
+  if (!s) return '';
+  const d = new Date(s);
+  if (isNaN(d)) return s;
+  return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+}
+
+// ═══════════════════════════
+// 공지사항
+// ═══════════════════════════
+let _notices = [];
+
+async function loadNotices() {
+  try {
+    _notices = await apiFetch('/api/notices');
+    renderNoticeTable();
+  } catch(e) {
+    toast('공지사항 로드 실패: ' + e.message, 'err');
+  }
+}
+
+function renderNoticeTable() {
+  const tbody = document.getElementById('notice-tbody');
+  if (!_notices.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">등록된 공지사항이 없습니다.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = _notices.map((n, i) => `
+    <tr id="nrow-${n.id}">
+      <td>${i+1}</td>
+      <td class="td-title">${n.title}</td>
+      <td><span class="badge ${n.category==='중요'?'badge-imp':n.category==='신규'?'badge-new':'badge-gen'}">${n.category||'일반'}</span></td>
+      <td>${n.is_pinned ? '<span class="badge badge-pin">핀</span>' : '—'}</td>
+      <td>${fmtDate(n.created_at)}</td>
+      <td>
+        <button class="btn btn-sm btn-edit" onclick="startEditNotice(${n.id})">수정</button>
+        <button class="btn btn-sm btn-del"  onclick="deleteNotice(${n.id})">삭제</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function createNotice() {
+  const title   = document.getElementById('n-title').value.trim();
+  const content = document.getElementById('n-content').value.trim();
+  const category= document.getElementById('n-cat').value;
+  const is_pinned = document.getElementById('n-pin').checked;
+  if (!title || !content) { toast('제목과 내용을 입력하세요.', 'err'); return; }
+  try {
+    await apiFetch('/api/notices', 'POST', { title, content, category, is_pinned });
+    document.getElementById('n-title').value   = '';
+    document.getElementById('n-content').value = '';
+    document.getElementById('n-pin').checked   = false;
+    toast('공지사항이 추가됐습니다.');
+    loadNotices();
+  } catch(e) { toast('추가 실패: ' + e.message, 'err'); }
+}
+
+function startEditNotice(id) {
+  const n = _notices.find(x => x.id === id);
+  if (!n) return;
+  document.getElementById('em-id').value      = id;
+  document.getElementById('em-title').value   = n.title;
+  document.getElementById('em-content').value = n.content || '';
+  document.getElementById('em-cat').value     = n.category || '일반';
+  document.getElementById('em-pin').checked   = !!n.is_pinned;
+  document.getElementById('edit-modal-overlay').classList.add('open');
+}
+
+function closeEditModal() {
+  document.getElementById('edit-modal-overlay').classList.remove('open');
+}
+
+async function saveEditNotice() {
+  const id       = parseInt(document.getElementById('em-id').value);
+  const title    = document.getElementById('em-title').value.trim();
+  const content  = document.getElementById('em-content').value.trim();
+  const category = document.getElementById('em-cat').value;
+  const is_pinned= document.getElementById('em-pin').checked;
+  if (!title || !content) { toast('제목과 내용을 입력하세요.', 'err'); return; }
+  try {
+    await apiFetch(`/api/notices/${id}`, 'PUT', { title, content, category, is_pinned });
+    toast('공지사항이 수정됐습니다.');
+    closeEditModal();
+    loadNotices();
+  } catch(e) { toast('수정 실패: ' + e.message, 'err'); }
+}
+
+async function deleteNotice(id) {
+  if (!confirm('이 공지사항을 삭제하시겠습니까?')) return;
+  try {
+    await apiFetch(`/api/notices/${id}`, 'DELETE');
+    toast('삭제됐습니다.');
+    loadNotices();
+  } catch(e) { toast('삭제 실패: ' + e.message, 'err'); }
+}
+
+// ═══════════════════════════
+// 모임 정보 관리
+// ═══════════════════════════
+function renderSubMini(t) {
+  const subs = (typeof t.card_submissions === 'string')
+    ? JSON.parse(t.card_submissions || '{}')
+    : (t.card_submissions || {});
+  return '<div class="sub-mini-wrap">' + SUB_ITEMS.map(({key, label}) => {
+    const state = subs[key] || '';
+    const {text, cls} = subStateDisplay(state);
+    return `<div class="sub-mini ${cls}" data-key="${key}" data-state="${state}" data-team-id="${t.id}" onclick="openSubPicker(this)">${label}<span>${text}</span></div>`;
+  }).join('') + '</div>';
+}
+
+async function autoSaveTeamSub(teamId) {
+  const t = _teams.find(x => x.id === teamId);
+  if (!t) return;
+  const card_submissions = {};
+  document.querySelectorAll(`.sub-mini[data-team-id="${teamId}"]`).forEach(el => {
+    if (el.dataset.state) card_submissions[el.dataset.key] = el.dataset.state;
+  });
+  t.card_submissions = card_submissions;
+  try {
+    await apiFetch(`/api/teams/${teamId}`, 'PUT', { card_submissions });
+    toast('저장됐습니다.');
+  } catch(e) { toast('저장 실패: ' + e.message, 'err'); }
+}
+
+function renderTeamManageTable() {
+  const tbody = document.getElementById('team-tbody');
+  if (!_teams.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="5">팀 데이터가 없습니다.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = _teams.map(t => `
+    <tr id="trow-${t.id}">
+      <td>${t.order_num || t.id}</td>
+      <td><strong>${t.name}</strong></td>
+      <td style="white-space:normal">${t.task || '—'}</td>
+      <td>${renderSubMini(t)}</td>
+      <td><button class="btn btn-sm btn-edit" onclick="startEditTeam(${t.id})">수정</button></td>
+    </tr>
+  `).join('');
+}
+
+const SUB_ITEMS = [
+  {key:'4',      label:'4월'},
+  {key:'5',      label:'5월'},
+  {key:'6',      label:'6월'},
+  {key:'7',      label:'7월'},
+  {key:'report', label:'결과보고서'},
+  {key:'ppt',    label:'발표PPT'},
+];
+
+function subStateDisplay(state) {
+  if (state === '완료') return {text:'제출완료', cls:'s-done'};
+  if (state && state.startsWith('지연:')) return {text:`지연(${state.split(':')[1]}일)`, cls:'s-delay'};
+  return {text:'미제출', cls:'s-none'};
+}
+
+let _subPickerTarget = null;
+
+function openSubPicker(el) {
+  const picker = document.getElementById('sub-picker');
+  if (_subPickerTarget === el && picker.classList.contains('open')) {
+    closeSubPicker(); return;
+  }
+  _subPickerTarget = el;
+  const state = el.dataset.state || '';
+  document.getElementById('sub-delay-days').value =
+    state.startsWith('지연:') ? state.split(':')[1] : '';
+  const rect = el.getBoundingClientRect();
+  picker.style.left = Math.min(rect.left, window.innerWidth - 185) + 'px';
+  picker.style.top  = (rect.bottom + 6) + 'px';
+  picker.classList.add('open');
+}
+
+function closeSubPicker() {
+  document.getElementById('sub-picker').classList.remove('open');
+  _subPickerTarget = null;
+}
+
+function setSubState(state) {
+  if (!_subPickerTarget) return;
+  _subPickerTarget.dataset.state = state;
+  const {text, cls} = subStateDisplay(state);
+  const baseClass = _subPickerTarget.classList.contains('sub-mini') ? 'sub-mini' : 'sub-toggle-box';
+  _subPickerTarget.className = baseClass + ' ' + cls;
+  _subPickerTarget.querySelector('span').textContent = text;
+  const teamId = parseInt(_subPickerTarget.dataset.teamId);
+  if (teamId) autoSaveTeamSub(teamId);
+  closeSubPicker();
+}
+
+function confirmDelay() {
+  const days = parseInt(document.getElementById('sub-delay-days').value) || 0;
+  if (!days) { document.getElementById('sub-delay-days').focus(); return; }
+  setSubState('지연:' + days);
+}
+
+document.addEventListener('click', function(e) {
+  const picker = document.getElementById('sub-picker');
+  if (!picker || !picker.classList.contains('open')) return;
+  if (!picker.contains(e.target) &&
+      !e.target.classList.contains('sub-toggle-box') &&
+      !e.target.classList.contains('sub-mini')) {
+    closeSubPicker();
+  }
+});
+
+function startEditTeam(id) {
+  const t = _teams.find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('tm-id').value   = id;
+  document.getElementById('tm-name').value = t.name || '';
+  document.getElementById('tm-task').value = t.task || '';
+  const subs = (typeof t.card_submissions === 'string')
+    ? JSON.parse(t.card_submissions || '{}')
+    : (t.card_submissions || {});
+  const grid = document.getElementById('tm-subs-grid');
+  grid.innerHTML = SUB_ITEMS.map(({key, label}) => {
+    const state = subs[key] || '';
+    const {text, cls} = subStateDisplay(state);
+    return `<div class="sub-toggle-box ${cls}" data-key="${key}" data-state="${state}" onclick="openSubPicker(this)">${label}<span>${text}</span></div>`;
+  }).join('');
+  document.getElementById('team-modal-overlay').style.display = 'flex';
+}
+
+function closeTeamModal() {
+  document.getElementById('team-modal-overlay').style.display = 'none';
+}
+
+async function saveTeam() {
+  const id   = parseInt(document.getElementById('tm-id').value);
+  const name = document.getElementById('tm-name').value.trim();
+  const task = document.getElementById('tm-task').value.trim();
+  if (!name) { toast('모임명을 입력하세요.', 'err'); return; }
+  const card_submissions = {};
+  document.querySelectorAll('#tm-subs-grid .sub-toggle-box').forEach(el => {
+    if (el.dataset.state) card_submissions[el.dataset.key] = el.dataset.state;
+  });
+  try {
+    await apiFetch(`/api/teams/${id}`, 'PUT', { name, task, card_submissions });
+    const t = _teams.find(x => x.id === id);
+    if (t) { t.name = name; t.task = task; t.card_submissions = card_submissions; }
+    toast('모임 정보가 수정됐습니다.');
+    closeTeamModal();
+    renderTeamManageTable();
+  } catch(e) { toast('수정 실패: ' + e.message, 'err'); }
+}
+
+// ═══════════════════════════
+// 연구모임 활동
+// ═══════════════════════════
+let _teams      = [];
+let _activities = [];
+let _selTeamId  = null;
+
+async function loadTeams() {
+  try {
+    _teams = await apiFetch('/api/teams');
+    const sel = document.getElementById('team-select');
+    sel.innerHTML = '<option value="">팀을 선택하세요</option>' +
+      _teams.map(t => `<option value="${t.id}">${t.order_num}. ${t.name}</option>`).join('');
+  } catch(e) { toast('팀 목록 로드 실패: ' + e.message, 'err'); }
+}
+
+async function loadActivities() {
+  const sel = document.getElementById('team-select');
+  _selTeamId = sel.value ? parseInt(sel.value) : null;
+  if (!_selTeamId) {
+    document.getElementById('act-stats').style.display     = 'none';
+    document.getElementById('act-form-card').style.display = 'none';
+    document.getElementById('act-list-card').style.display = 'none';
+    return;
+  }
+  try {
+    const data = await apiFetch(`/api/teams/${_selTeamId}/activities`);
+    _activities = data.activities || [];
+    const used    = data.total_used || 0;
+    const balance = data.balance ?? (300000 - used);
+    document.getElementById('stat-used').textContent    = fmt(used);
+    document.getElementById('stat-balance').textContent = fmt(balance);
+    document.getElementById('stat-count').textContent   = _activities.length + '건';
+    document.getElementById('stat-balance').className   = 'stat-val ' + (balance < 0 ? 'danger' : 'success');
+    document.getElementById('act-stats').style.display     = '';
+    document.getElementById('act-form-card').style.display = '';
+    document.getElementById('act-list-card').style.display = '';
+    renderActivityTable();
+  } catch(e) { toast('활동 로드 실패: ' + e.message, 'err'); }
+}
+
+function renderActivityTable() {
+  const tbody = document.getElementById('act-tbody');
+  if (!_activities.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="5">등록된 활동이 없습니다.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = _activities.map(a => `
+    <tr id="arow-${a.id}">
+      <td>${a.activity_date||''}</td>
+      <td class="td-title">${a.title}</td>
+      <td>${a.attendees||0}명</td>
+      <td>${fmt(a.amount_used)}</td>
+      <td>
+        <button class="btn btn-sm btn-edit" onclick="startEditActivity(${a.id})">수정</button>
+        <button class="btn btn-sm btn-del"  onclick="deleteActivity(${a.id})">삭제</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function createActivity() {
+  if (!_selTeamId) { toast('팀을 선택하세요.', 'err'); return; }
+  const activity_date = getDateVal('a-y','a-m','a-d');
+  const title         = document.getElementById('a-title').value.trim();
+  const description   = document.getElementById('a-desc').value.trim();
+  const attendees     = parseNum(document.getElementById('a-attendees').value);
+  const amount_used   = parseNum(document.getElementById('a-amount').value);
+  if (!activity_date || !title) { toast('날짜와 제목을 입력하세요.', 'err'); return; }
+  try {
+    await apiFetch('/api/activities', 'POST', {
+      team_id: _selTeamId, activity_date, title, description, attendees, amount_used
+    });
+    document.getElementById('a-y').value = '';
+    document.getElementById('a-m').value = '';
+    document.getElementById('a-d').value = '';
+    document.getElementById('a-title').value     = '';
+    document.getElementById('a-desc').value      = '';
+    document.getElementById('a-attendees').value = '';
+    document.getElementById('a-amount').value    = '';
+    toast('활동이 추가됐습니다.');
+    loadActivities();
+  } catch(e) { toast('추가 실패: ' + e.message, 'err'); }
+}
+
+function startEditActivity(id) {
+  const a = _activities.find(x => x.id === id);
+  if (!a) return;
+  const row = document.getElementById('arow-' + id);
+  row.classList.add('edit-row');
+  row.innerHTML = `
+    <td><div class="date-parts" style="gap:3px">
+      <input type="text" id="ea-y-${id}" value="${(a.activity_date||'').slice(0,4)}"  maxlength="4" placeholder="YYYY" style="width:52px" inputmode="numeric" oninput="dpInput(this,2000,2099,4)"/>
+      <span class="sep">-</span>
+      <input type="text" id="ea-m-${id}" value="${(a.activity_date||'').slice(5,7)}"  maxlength="2" placeholder="MM"   style="width:36px" inputmode="numeric" oninput="dpInput(this,1,12,2)"/>
+      <span class="sep">-</span>
+      <input type="text" id="ea-d-${id}" value="${(a.activity_date||'').slice(8,10)}" maxlength="2" placeholder="DD"   style="width:36px" inputmode="numeric" oninput="dpInput(this,1,31,2)"/>
+    </div></td>
+    <td><input id="ea-title-${id}" value="${a.title.replace(/"/g,'&quot;')}"/></td>
+    <td><input type="text" id="ea-att-${id}" value="${a.attendees ? Number(a.attendees).toLocaleString('ko-KR') : ''}" placeholder="0" inputmode="numeric" oninput="fmtNumInput(this)" style="width:80px"/></td>
+    <td><input type="text" id="ea-amt-${id}" value="${a.amount_used ? Number(a.amount_used).toLocaleString('ko-KR') : ''}" placeholder="0" inputmode="numeric" oninput="fmtNumInput(this)" style="width:110px"/></td>
+    <td>
+      <button class="btn btn-sm btn-primary" onclick="saveEditActivity(${id})">저장</button>
+      <button class="btn btn-sm btn-cancel"  onclick="renderActivityTable()">취소</button>
+    </td>`;
+}
+
+async function saveEditActivity(id) {
+  const activity_date = getDateVal(`ea-y-${id}`,`ea-m-${id}`,`ea-d-${id}`);
+  const title         = document.getElementById(`ea-title-${id}`).value.trim();
+  const attendees     = parseNum(document.getElementById(`ea-att-${id}`).value);
+  const amount_used   = parseNum(document.getElementById(`ea-amt-${id}`).value);
+  if (!activity_date || !title) { toast('날짜와 제목을 입력하세요.', 'err'); return; }
+  try {
+    await apiFetch(`/api/activities/${id}`, 'PUT', { activity_date, title, attendees, amount_used });
+    toast('활동이 수정됐습니다.');
+    loadActivities();
+  } catch(e) { toast('수정 실패: ' + e.message, 'err'); }
+}
+
+async function deleteActivity(id) {
+  if (!confirm('이 활동을 삭제하시겠습니까?')) return;
+  try {
+    await apiFetch(`/api/activities/${id}`, 'DELETE');
+    toast('삭제됐습니다.');
+    loadActivities();
+  } catch(e) { toast('삭제 실패: ' + e.message, 'err'); }
+}
+
+// ═══════════════════════════
+// 사이드바 콘텐츠 관리
+// ═══════════════════════════
+const SCHED_DEFAULT = [
+  {month:'4월', deadline:'~ 5. 8.(금)', status:'완료'},
+  {month:'5월', deadline:'~ 6. 5.(목)', status:'진행중'},
+  {month:'6월', deadline:'~ 7. 3.(금)', status:''},
+  {month:'7월', deadline:'~ 8. 7.(금)', status:''},
+  {month:'8월', deadline:'결과보고서',  status:''},
+];
+const TL_DEFAULT = [
+  {date:'~ 2026. 4~8월',     label:'월 1회 이상 연구활동',          done:true},
+  {date:'~ 2026. 9. 11.(금)',label:'결과보고서 제출',               done:false},
+  {date:'~ 2026. 9. 18.(금)',label:'PPT 발표자료 제출',             done:false},
+  {date:'2026. 9월',         label:'1차 평가 (서면 70% + 정량 30%)',done:false},
+  {date:'2026. 9~10월',      label:'2차 평가 (PPT 발표, 7분)',      done:false},
+  {date:'2026. 10~12월',     label:'우수팀 국내 선진지 벤치마킹',    done:false},
+];
+
+let _schedRows    = [];
+let _timelineRows = [];
+
+async function loadContentTab() {
+  try {
+    const s = await apiFetch('/api/settings');
+    _schedRows    = s.schedule    ? JSON.parse(s.schedule)    : [...SCHED_DEFAULT];
+    _timelineRows = s.timeline    ? JSON.parse(s.timeline)    : [...TL_DEFAULT];
+  } catch {
+    _schedRows    = [...SCHED_DEFAULT];
+    _timelineRows = [...TL_DEFAULT];
+  }
+  renderSchedRows();
+  renderTimelineRows();
+}
+
+function renderSchedRows() {
+  document.getElementById('sched-rows').innerHTML = _schedRows.map((r,i) => `
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px">
+      <input type="text" value="${r.month}" placeholder="월" style="width:60px"
+        oninput="_schedRows[${i}].month=this.value"/>
+      <input type="text" value="${r.deadline}" placeholder="제출기한" style="width:130px"
+        oninput="_schedRows[${i}].deadline=this.value"/>
+      <select onchange="_schedRows[${i}].status=this.value" style="width:90px">
+        <option value="" ${!r.status?'selected':''}>—</option>
+        <option value="진행중" ${r.status==='진행중'?'selected':''}>진행중</option>
+        <option value="완료"   ${r.status==='완료'?'selected':''}>완료</option>
+      </select>
+      <button class="btn btn-sm btn-del" onclick="removeSchedRow(${i})">✕</button>
+    </div>`).join('');
+}
+
+function addSchedRow() {
+  _schedRows.push({month:'', deadline:'', status:''});
+  renderSchedRows();
+}
+function removeSchedRow(i) {
+  _schedRows.splice(i,1);
+  renderSchedRows();
+}
+async function saveSchedule() {
+  try {
+    await apiFetch('/api/settings/schedule','PUT',{value: JSON.stringify(_schedRows)});
+    toast('제출 일정이 저장됐습니다.');
+  } catch(e) { toast('저장 실패: ' + e.message,'err'); }
+}
+
+function renderTimelineRows() {
+  document.getElementById('timeline-rows').innerHTML = _timelineRows.map((r,i) => `
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap">
+      <input type="text" value="${r.date}" placeholder="날짜" style="width:160px"
+        oninput="_timelineRows[${i}].date=this.value"/>
+      <input type="text" value="${r.label}" placeholder="내용" style="flex:1;min-width:180px"
+        oninput="_timelineRows[${i}].label=this.value"/>
+      <label style="display:flex;align-items:center;gap:4px;font-size:12px;white-space:nowrap">
+        <input type="checkbox" ${r.done?'checked':''} onchange="_timelineRows[${i}].done=this.checked"
+          style="accent-color:var(--accent)"/> 완료
+      </label>
+      <button class="btn btn-sm btn-del" onclick="removeTimelineRow(${i})">✕</button>
+    </div>`).join('');
+}
+
+function addTimelineRow() {
+  _timelineRows.push({date:'', label:'', done:false});
+  renderTimelineRows();
+}
+function removeTimelineRow(i) {
+  _timelineRows.splice(i,1);
+  renderTimelineRows();
+}
+async function saveTimeline() {
+  try {
+    await apiFetch('/api/settings/timeline','PUT',{value: JSON.stringify(_timelineRows)});
+    toast('주요 일정이 저장됐습니다.');
+  } catch(e) { toast('저장 실패: ' + e.message,'err'); }
+}
+</script>
+</body>
+</html>

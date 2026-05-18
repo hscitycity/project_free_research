@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>화성시 자유주제 정책연구모임 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --navy-deep: #030B18;
+  --navy: #0B1E3D;
+  --blue: #1565C0;
+  --accent: #2196F3;
+  --accent-bright: #42A5F5;
+  --gold: #F59E0B;
+  --gold-light: #FCD34D;
+  --text: #E2ECF8;
+  --text-muted: #A8C8E8;
+  --border: rgba(33,150,243,0.2);
+  --card-bg: rgba(5,18,45,0.92);
+  --card-border: rgba(33,150,243,0.22);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Noto Sans KR',sans-serif;
+  background:var(--navy-deep);
+  color:var(--text);
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* ── MARS BACKGROUND ── */
+#mars-bg{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:url('assets/mars.jpg') center/cover no-repeat;
+  opacity:1;
+}
+
+/* ── CANVAS (stars — above mars-bg) ── */
+#bg-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:1;pointer-events:none;
+}
+
+/* ── APP WRAPPER ── */
+#app{position:relative;z-index:2;}
+
+/* ── HEADER ── */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(3,11,24,0.92);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(33,150,243,0.2);
+  padding:0 2rem;
+}
+.header-inner{
+  max-width:1100px;margin:0 auto;height:62px;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-year{
+  font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:500;
+  background:linear-gradient(135deg,var(--accent),var(--accent-bright));
+  color:#fff;padding:3px 9px;border-radius:5px;letter-spacing:.06em;
+  box-shadow:0 0 14px rgba(33,150,243,0.45);
+}
+.logo-name{font-size:16px;font-weight:700;color:#E8F4FD;letter-spacing:-.02em;white-space:nowrap;}
+nav{display:flex;gap:4px;}
+nav a{
+  color:var(--text-muted);font-size:14px;text-decoration:none;
+  padding:6px 12px;border-radius:6px;transition:all .15s;white-space:nowrap;
+}
+nav a:hover{color:#fff;background:rgba(33,150,243,0.15);}
+nav a.active{
+  color:#fff;background:rgba(33,150,243,0.18);
+  border:1px solid rgba(33,150,243,0.35);
+}
+
+/* ── MOBILE MENU ── */
+.hamburger{
+  display:none;flex-direction:column;justify-content:center;align-items:center;
+  gap:5px;width:38px;height:38px;cursor:pointer;border:none;background:none;
+}
+.hamburger span{
+  display:block;width:22px;height:2px;background:var(--text-muted);
+  border-radius:2px;transition:transform .25s,opacity .2s;
+}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.mobile-menu{
+  display:none;position:fixed;top:63px;left:0;right:0;z-index:99;
+  background:rgba(3,11,24,0.97);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(33,150,243,0.2);padding:.5rem 1rem;
+  transform:translateY(-8px);opacity:0;
+  transition:transform .25s,opacity .2s;pointer-events:none;
+}
+.mobile-menu.open{transform:translateY(0);opacity:1;pointer-events:all;}
+.mobile-menu a{
+  display:block;color:var(--text-muted);font-size:15px;text-decoration:none;
+  padding:10px 12px;border-radius:8px;transition:all .15s;
+}
+.mobile-menu a:hover{color:#fff;background:rgba(33,150,243,0.1);}
+
+/* ── HERO ── */
+.hero{
+  min-height:50vh;display:flex;align-items:center;
+  padding:5rem 2rem 2.5rem;position:relative;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 65% 55% at 50% 40%,rgba(21,101,192,0.15) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-inner{max-width:1100px;margin:0 auto;width:100%;}
+.hero-box{
+  display:block;
+  width:100%;
+  max-width:1100px;
+  background:rgba(3,11,24,0.72);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border:1px solid rgba(33,150,243,0.3);
+  border-radius:20px;
+  padding:2.5rem 2.75rem;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(33,150,243,0.1);border:1px solid rgba(33,150,243,0.3);
+  color:var(--accent-bright);font-family:'IBM Plex Mono',monospace;font-size:12px;
+  padding:5px 14px;border-radius:100px;margin-bottom:1.5rem;letter-spacing:.1em;
+  animation:heroIn .6s ease both;
+}
+.hero h1{
+  font-size:clamp(32px,5vw,58px);font-weight:900;line-height:1.2;
+  margin-bottom:1.25rem;letter-spacing:-.03em;
+  background:linear-gradient(135deg,#E8F4FD 30%,var(--accent-bright) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:heroIn .6s .08s ease both;
+}
+.hero h1 .gold{-webkit-text-fill-color:var(--gold);color:var(--gold);}
+.hero-desc{
+  font-size:16px;color:var(--text-muted);line-height:1.9;max-width:560px;
+  margin-bottom:2.5rem;animation:heroIn .6s .16s ease both;
+}
+.hero-groups{display:flex;flex-wrap:wrap;gap:8px;animation:heroIn .6s .24s ease both;}
+.hero-group-pill{
+  font-size:13px;font-weight:500;padding:6px 16px;border-radius:100px;
+  background:rgba(33,150,243,0.1);color:#90CAF9;
+  border:1px solid rgba(33,150,243,0.25);
+  cursor:pointer;transition:all .2s;
+}
+.hero-group-pill:hover{
+  background:rgba(33,150,243,0.25);border-color:rgba(33,150,243,0.5);
+  color:#fff;transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(33,150,243,0.2);
+}
+@keyframes heroIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── LAYOUT ── */
+.container{max-width:1100px;margin:0 auto;padding:1.25rem 2rem 6rem;}
+.two-col{display:grid;grid-template-columns:1fr 420px;gap:2rem;align-items:start;}
+
+/* ── SECTION TITLE ── */
+.sec-title{
+  font-size:16px;font-weight:700;color:#E8F4FD;
+  margin-bottom:1.25rem;
+  display:flex;align-items:center;
+  padding-bottom:.75rem;
+  border-bottom:1px solid rgba(33,150,243,0.2);
+}
+.sec-title-left{display:flex;align-items:center;gap:8px;}
+.toggle-all-btn{
+  margin-left:auto;font-size:12px;font-family:'Noto Sans KR',sans-serif;
+  color:#E2ECF8;background:#0B1E3D;
+  border:1px solid rgba(33,150,243,0.5);border-radius:6px;
+  padding:4px 11px;cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.toggle-all-btn:hover{
+  color:#fff;border-color:rgba(33,150,243,0.8);
+  background:#1565C0;
+}
+.sec-badge{
+  font-size:11px;font-family:'IBM Plex Mono',monospace;
+  background:linear-gradient(135deg,var(--accent),var(--accent-bright));
+  color:#fff;padding:2px 9px;border-radius:4px;letter-spacing:.06em;
+  box-shadow:0 0 10px rgba(33,150,243,0.4);
+}
+
+/* ── GLASS CARD (3D tilt base) ── */
+.glass-card{
+  background:var(--card-bg);
+  backdrop-filter:blur(18px);
+  border:1px solid var(--card-border);
+  border-radius:16px;
+  transition:box-shadow .2s ease, border-color .2s ease;
+  transform-style:preserve-3d;
+  will-change:transform;
+}
+.glass-card:hover{
+  border-color:rgba(33,150,243,0.4);
+  box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 24px rgba(33,150,243,0.1);
+}
+
+/* ── SEARCH BAR ── */
+.search-wrap{position:relative;margin-bottom:1rem;}
+.search-wrap input{
+  width:100%;padding:10px 40px 10px 40px;
+  border:1px solid var(--card-border);border-radius:10px;
+  font-size:14px;font-family:'Noto Sans KR',sans-serif;
+  color:var(--text);background:rgba(5,18,45,0.92);
+  backdrop-filter:blur(10px);outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.search-wrap input:focus{
+  border-color:rgba(33,150,243,0.5);
+  box-shadow:0 0 0 3px rgba(33,150,243,0.1);
+}
+.search-wrap input::placeholder{color:rgba(123,163,200,0.5);}
+.search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;}
+.search-clear{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  background:none;border:none;cursor:pointer;color:var(--text-muted);
+  font-size:14px;padding:4px;border-radius:50%;
+  opacity:0;pointer-events:none;transition:all .15s;
+}
+.search-clear.visible{opacity:1;pointer-events:all;}
+.search-clear:hover{background:rgba(255,255,255,.08);color:#fff;}
+.search-count{font-size:13px;color:var(--text-muted);padding:0 2px 8px;display:none;}
+mark{background:rgba(245,158,11,0.25);color:var(--gold-light);border-radius:2px;padding:0 2px;}
+
+/* ── TABS ── */
+.tab-bar{display:flex;gap:6px;margin-bottom:1.25rem;flex-wrap:wrap;}
+.tab-btn{
+  padding:7px 16px;font-size:13px;font-family:'Noto Sans KR',sans-serif;font-weight:500;
+  border:1px solid var(--card-border);border-radius:8px;cursor:pointer;
+  background:rgba(5,18,45,0.92);color:var(--text);transition:all .15s;
+}
+.tab-btn:hover{border-color:rgba(33,150,243,0.4);color:var(--accent-bright);}
+.tab-btn.active{
+  background:rgba(33,150,243,0.18);color:#fff;
+  border-color:rgba(33,150,243,0.45);
+  box-shadow:0 0 12px rgba(33,150,243,0.15);
+}
+.tab-btn:active{transform:scale(.95);}
+
+/* ── NOTICE LIST ── */
+.notice-list-wrap{
+  border-radius:12px;overflow:hidden;
+  border:1px solid var(--card-border);
+}
+.notice-item{
+  display:flex;align-items:flex-start;gap:12px;padding:1rem 1.25rem;
+  border-bottom:1px solid rgba(33,150,243,0.12);cursor:pointer;
+  background:rgba(5,18,45,0.92);
+  transition:background .12s,transform .15s;
+  animation:itemIn .35s ease both;
+}
+.notice-item:last-child{border-bottom:none;}
+.notice-item:hover{background:rgba(33,150,243,0.1);transform:translateX(4px);}
+@keyframes itemIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+.n-badge{
+  font-size:11px;font-weight:700;padding:3px 8px;border-radius:5px;
+  white-space:nowrap;flex-shrink:0;margin-top:2px;
+}
+.b-imp{background:rgba(245,158,11,0.2);color:var(--gold);}
+.b-new{background:rgba(33,150,243,0.2);color:var(--accent-bright);}
+.b-gen{background:rgba(123,163,200,0.12);color:var(--text-muted);}
+.n-content{flex:1;min-width:0;}
+.n-title{font-size:15px;font-weight:500;color:var(--text);line-height:1.5;}
+.n-meta{font-size:13px;color:var(--text-muted);margin-top:3px;}
+.n-date{font-size:12px;color:rgba(123,163,200,0.6);white-space:nowrap;font-family:'IBM Plex Mono',monospace;flex-shrink:0;margin-top:3px;}
+.no-results{
+  padding:3rem 1rem;text-align:center;color:var(--text-muted);font-size:15px;
+  background:rgba(8,25,55,0.55);
+}
+.notice-loading{
+  padding:2rem;text-align:center;color:var(--text-muted);font-size:14px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  background:rgba(8,25,55,0.55);
+}
+.spinner{
+  width:16px;height:16px;border:2px solid rgba(33,150,243,0.2);
+  border-top-color:var(--accent);border-radius:50%;
+  animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── NOTICE ACCORDION ── */
+.notice-item.open{background:rgba(33,150,243,0.07);}
+.notice-arrow{
+  margin-left:auto;font-size:13px;color:var(--text-muted);flex-shrink:0;
+  transition:transform .28s cubic-bezier(.4,0,.2,1);line-height:1;
+}
+.notice-item.open .notice-arrow{transform:rotate(180deg);}
+.notice-body{
+  max-height:0;overflow:hidden;
+  transition:max-height .4s cubic-bezier(.4,0,.2,1), border-top-width .3s;
+  background:#020C20;
+  border-top:0 solid rgba(33,150,243,0.15);
+}
+.notice-body.open{
+  border-top-width:1px;
+}
+.notice-body-inner{padding:1.25rem 1.5rem 1.5rem;}
+.nd-meta{font-size:13px;color:var(--text-muted);margin-bottom:.85rem;display:flex;gap:1rem;flex-wrap:wrap;}
+.nd-content{font-size:15px;line-height:2;color:var(--text);white-space:pre-wrap;}
+.nd-content strong{font-weight:700;color:#E8F4FD;}
+.nd-content .highlight{
+  background:rgba(33,150,243,0.1);border-left:3px solid var(--accent);
+  padding:.75rem 1rem;border-radius:0 8px 8px 0;margin:.75rem 0;display:block;
+}
+.nd-content .warn{
+  background:rgba(245,158,11,0.1);border-left:3px solid var(--gold);
+  padding:.75rem 1rem;border-radius:0 8px 8px 0;margin:.75rem 0;display:block;
+}
+
+/* ── NOTICE PAGINATION ── */
+.notice-pagination{
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  padding:.85rem 1rem;border-top:1px solid rgba(33,150,243,0.12);
+  background:rgba(5,18,45,0.92);
+}
+.page-btn{
+  min-width:34px;height:34px;padding:0 8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-family:'IBM Plex Mono',monospace;
+  border:1px solid var(--card-border);border-radius:7px;
+  background:rgba(5,18,45,0.92);color:var(--text-muted);
+  cursor:pointer;transition:all .15s;
+}
+.page-btn:hover:not(:disabled){border-color:rgba(33,150,243,0.4);color:var(--accent-bright);}
+.page-btn.active{
+  background:rgba(33,150,243,0.18);color:#fff;
+  border-color:rgba(33,150,243,0.45);
+  box-shadow:0 0 10px rgba(33,150,243,0.15);
+}
+.page-btn:disabled{opacity:.3;cursor:default;}
+
+/* ── RESEARCH GROUP CARDS ── */
+.group-card{
+  background:var(--card-bg);backdrop-filter:blur(18px);
+  border:1px solid var(--card-border);border-radius:14px;
+  overflow:hidden;margin-bottom:.875rem;
+  opacity:0;transform:translateY(22px);
+  transition:opacity .45s ease,transform .45s ease,box-shadow .2s,border-color .2s;
+  transform-style:preserve-3d;will-change:transform;
+}
+.group-card.in-view{opacity:1;transform:translateY(0);}
+.group-card:hover{
+  border-color:rgba(33,150,243,0.38);
+  box-shadow:0 8px 32px rgba(0,0,0,0.45),0 0 20px rgba(33,150,243,0.07);
+}
+.gc-header{
+  padding:1.125rem 1.25rem;display:flex;align-items:flex-start;gap:12px;
+  cursor:pointer;transition:background .12s;user-select:none;
+}
+.gc-header:hover{background:rgba(33,150,243,0.05);}
+.gc-num{
+  font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:500;
+  color:#fff;padding:4px 9px;border-radius:5px;flex-shrink:0;margin-top:2px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.35);
+}
+.gc-name{font-size:15px;font-weight:700;color:#E8F4FD;margin-bottom:3px;line-height:1.4;}
+.gc-task{font-size:13px;color:var(--text-muted);line-height:1.5;}
+.gc-status{
+  font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;
+  flex-shrink:0;margin-top:3px;white-space:nowrap;
+}
+.gc-status.done{background:rgba(34,197,94,0.15);color:#4ade80;border:1px solid rgba(34,197,94,0.3);}
+.gc-status.prog{background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.3);}
+.gc-status.none{background:rgba(138,165,200,0.1);color:var(--text-muted);border:1px solid rgba(138,165,200,0.2);}
+
+/* ── MONTHLY SUBMISSION GRID ── */
+.card-sub-wrap{margin-bottom:.875rem;}
+.card-sub-title{font-size:12px;font-weight:700;color:var(--text-muted);margin-bottom:.5rem;letter-spacing:.05em;}
+.card-sub-grid{display:flex;gap:8px;flex-wrap:wrap;}
+.cs-item{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  background:rgba(5,18,45,0.6);border:1px solid rgba(33,150,243,0.15);
+  border-radius:8px;padding:7px 12px;min-width:52px;
+}
+.cs-month{font-size:11px;color:var(--text-muted);font-weight:600;}
+.cs-badge{font-size:11px;font-weight:700;padding:2px 7px;border-radius:100px;white-space:nowrap;}
+.cs-badge.done{background:rgba(34,197,94,0.15);color:#4ade80;}
+.cs-badge.prog{background:rgba(245,158,11,0.15);color:#fbbf24;}
+.cs-badge.none{background:rgba(138,165,200,0.08);color:rgba(138,165,200,0.5);}
+.gc-toggle{
+  margin-left:auto;font-size:18px;color:var(--text-muted);flex-shrink:0;
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+}
+.gc-toggle.open{transform:rotate(180deg);}
+.gc-body{
+  max-height:0;overflow:hidden;padding:0 1.25rem;
+  border-top:0px solid rgba(33,150,243,0.12);
+  transition:max-height .4s cubic-bezier(.4,0,.2,1),padding .3s ease,border-top-width .3s;
+}
+.gc-body.open{max-height:900px;padding:.875rem 1.25rem 1.25rem;border-top-width:1px;}
+.gc-desc{font-size:14px;color:var(--text-muted);line-height:1.8;margin-bottom:.875rem;}
+
+/* ── BUDGET PROGRESS ── */
+.gc-budget{display:flex;justify-content:space-between;align-items:center;margin:.75rem 0 .35rem;font-size:13px;}
+.gc-budget-label{color:var(--text-muted);}
+.gc-budget-values{display:flex;gap:1rem;}
+.gc-budget-used{color:#F87171;font-weight:600;}
+.gc-budget-balance{color:#4ADE80;font-weight:600;}
+.gc-progress-wrap{height:7px;background:rgba(255,255,255,0.08);border-radius:99px;margin-bottom:1rem;overflow:hidden;}
+.gc-progress-fill{height:100%;border-radius:99px;transition:width .6s ease;}
+
+/* ── ACTIVITY LIST ── */
+.gc-activity-empty{font-size:13px;color:var(--text-muted);padding:.5rem 0;text-align:center;}
+.gc-activity-header{
+  display:grid;grid-template-columns:90px 1fr 60px 80px;
+  gap:.5rem;padding:.4rem .5rem;
+  font-size:12px;color:var(--text-muted);font-weight:600;
+  border-bottom:1px solid rgba(33,150,243,0.15);margin-bottom:.25rem;
+}
+.gc-activity-item{
+  display:grid;grid-template-columns:90px 1fr 60px 80px;
+  gap:.5rem;padding:.5rem;border-radius:7px;
+  font-size:13px;color:var(--text);
+  transition:background .12s;
+}
+.gc-activity-item:hover{background:rgba(33,150,243,0.07);}
+.gc-act-date{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text-muted);}
+.gc-act-title{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.gc-act-attendees{text-align:center;color:var(--text-muted);}
+.gc-act-amount{text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--gold);}
+
+/* ── SIDEBAR CARDS ── */
+.sidebar-card{
+  background:var(--card-bg);backdrop-filter:blur(18px);
+  border:1px solid var(--card-border);border-radius:16px;
+  padding:1.25rem;margin-bottom:1rem;
+  opacity:0;transform:translateY(22px);
+  transition:opacity .45s ease,transform .45s ease,box-shadow .2s,border-color .2s;
+  transform-style:preserve-3d;will-change:transform;
+}
+.sidebar-card.in-view{opacity:1;transform:translateY(0);}
+.sidebar-card:hover{
+  border-color:rgba(33,150,243,0.35);
+  box-shadow:0 8px 32px rgba(0,0,0,0.4),0 0 20px rgba(33,150,243,0.07);
+}
+.sc-title{
+  font-size:15px;font-weight:700;color:#E8F4FD;
+  margin-bottom:1rem;display:flex;align-items:center;gap:8px;
+}
+.sc-title::before{
+  content:'';width:3px;height:16px;
+  background:linear-gradient(to bottom,var(--accent),var(--gold));
+  border-radius:2px;flex-shrink:0;
+}
+
+/* ── SUPPORT GRID ── */
+.support-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1rem;}
+.sg-item{
+  background:rgba(33,150,243,0.07);border:1px solid rgba(33,150,243,0.15);
+  border-radius:10px;padding:.875rem;transition:background .15s,border-color .15s;
+}
+.sg-item:hover{background:rgba(33,150,243,0.13);border-color:rgba(33,150,243,0.3);}
+.sg-label{font-size:12px;color:#C8DCF0;margin-bottom:3px;}
+.sg-value{font-size:15px;font-weight:700;color:var(--gold);}
+
+/* ── TABLES ── */
+.sched-table,.incentive-table{width:100%;border-collapse:collapse;font-size:14px;}
+.sched-table th,.incentive-table th{
+  text-align:left;padding:7px 8px;
+  background:rgba(33,150,243,0.1);color:var(--text-muted);
+  font-weight:500;border-bottom:1px solid var(--card-border);
+}
+.incentive-table th{text-align:center;}
+.sched-table td,.incentive-table td{
+  padding:8px;border-bottom:1px solid rgba(33,150,243,0.07);color:var(--text);
+}
+.incentive-table td{text-align:center;}
+.sched-table tr:last-child td,.incentive-table tr:last-child td{border-bottom:none;}
+.incentive-table tr:hover td{background:rgba(33,150,243,0.05);}
+.month{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:500;color:var(--accent-bright);}
+.tag-done{display:inline-block;background:rgba(123,163,200,0.12);color:var(--text-muted);font-size:11px;padding:1px 7px;border-radius:3px;font-weight:600;}
+.tag-active{display:inline-block;background:rgba(34,197,94,0.15);color:#4ADE80;font-size:11px;padding:1px 7px;border-radius:3px;font-weight:600;}
+.rank-gold{font-weight:700;color:var(--gold);}
+.rank-silver{font-weight:700;color:#94A3B8;}
+.rank-bronze{font-weight:700;color:#F97316;}
+.rank-enc{font-weight:700;color:var(--text-muted);}
+
+/* ── TIMELINE ── */
+.timeline{position:relative;padding-left:1.5rem;}
+.timeline::before{content:'';position:absolute;left:6px;top:4px;bottom:4px;width:2px;background:rgba(33,150,243,0.18);border-radius:2px;}
+.tl-item{position:relative;margin-bottom:1rem;}
+.tl-item::before{
+  content:'';position:absolute;left:-1.25rem;top:5px;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--navy);border:2px solid rgba(33,150,243,0.25);
+}
+.tl-item.done::before{background:var(--accent);border-color:var(--accent);box-shadow:0 0 8px rgba(33,150,243,0.5);}
+.tl-item.current::before{background:var(--gold);border-color:var(--gold);box-shadow:0 0 8px rgba(245,158,11,0.5);}
+.tl-date{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text-muted);margin-bottom:2px;}
+.tl-label{font-size:14px;font-weight:500;color:var(--text);}
+.tl-badge{font-size:11px;background:rgba(245,158,11,0.2);color:var(--gold);padding:1px 6px;border-radius:3px;font-weight:600;margin-left:6px;}
+
+/* ── INFO / WARN BOXES ── */
+.info-box{
+  margin-top:.75rem;padding:.875rem;
+  background:rgba(33,150,243,0.08);border:1px solid rgba(33,150,243,0.18);
+  border-radius:10px;font-size:13px;color:#C8DCF0;line-height:1.9;
+}
+.info-box strong{color:#7DD3FC;}
+.warn-box{
+  margin-top:.875rem;padding:.875rem;
+  background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.2);
+  border-radius:10px;font-size:12px;color:rgba(245,158,11,0.8);line-height:1.9;
+}
+
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:1;
+  background:rgba(3,11,24,0.95);backdrop-filter:blur(16px);
+  color:var(--text-muted);font-size:13px;
+  padding:1.5rem 2rem;text-align:center;
+  border-top:1px solid rgba(33,150,243,0.12);
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .two-col{grid-template-columns:1fr;}
+  nav{display:none;}
+  .hamburger{display:flex;}
+  .mobile-menu{display:block;}
+  .hero{min-height:85vh;padding:5rem 1.25rem 3rem;}
+  .container{padding:2rem 1.25rem 4rem;}
+  .support-grid{grid-template-columns:1fr;}
+  .hero h1{font-size:26px;}
+}
+</style>
+</head>
+<body>
+
+<div id="mars-bg"></div>
+<canvas id="bg-canvas"></canvas>
+
+<div id="app">
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <span class="logo-year">2026</span>
+      <span class="logo-name">화성시 자유주제 정책연구모임</span>
+    </a>
+    <nav>
+      <a href="#notices" class="active" onclick="setNav(this)">공지사항</a>
+      <a href="#research" onclick="setNav(this)">연구모임</a>
+      <a href="#support" onclick="setNav(this)">활동비 지원</a>
+      <a href="#schedule" onclick="setNav(this)">일정</a>
+      <a href="#incentive" onclick="setNav(this)">인센티브</a>
+    </nav>
+    <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#notices" onclick="closeMobileMenu()">공지사항</a>
+  <a href="#research" onclick="closeMobileMenu()">연구모임</a>
+  <a href="#support" onclick="closeMobileMenu()">활동비 지원</a>
+  <a href="#schedule" onclick="closeMobileMenu()">일정</a>
+  <a href="#incentive" onclick="closeMobileMenu()">인센티브</a>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-box">
+      <div class="hero-eyebrow">✦ Hwaseong Free Policy Research 2026</div>
+      <h1>화성시의 더 나은 내일을 위해<br><span class="gold">자유주제 정책</span>으로 함께 연구합니다</h1>
+      <p class="hero-desc">화성시 자유주제 정책연구모임이 함께 연구합니다.<br>공지사항, 연구활동, 활동비 지원 정보를 확인하세요.</p>
+      <div class="hero-groups" id="hero-group-pills">
+        <!-- 팀 정보 로드 후 동적 생성 -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MAIN ── -->
+<div class="container">
+  <div class="two-col">
+
+    <div>
+      <!-- 공지사항 -->
+      <section id="notices" style="margin-bottom:2.5rem">
+        <div class="sec-title">
+          <div class="sec-title-left"><span class="sec-badge">NOTICE</span>공지사항</div>
+          <button class="toggle-all-btn" id="notice-toggle-all" onclick="toggleAllNotices()">전체 펼치기</button>
+        </div>
+        <div id="notice-list">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="notice-search" placeholder="공지사항 검색..." autocomplete="off" oninput="onSearch(this.value)"/>
+            <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
+          </div>
+          <div id="search-count" class="search-count"></div>
+          <div class="tab-bar">
+            <button class="tab-btn active" onclick="filterNotice('all',this)">전체</button>
+            <button class="tab-btn" onclick="filterNotice('important',this)">중요</button>
+            <button class="tab-btn" onclick="filterNotice('new',this)">신규</button>
+          </div>
+          <div class="notice-list-wrap" id="notice-items">
+            <div class="notice-loading"><div class="spinner"></div>공지사항 불러오는 중...</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 연구모임 -->
+      <section id="research" style="margin-bottom:2.5rem">
+        <div class="sec-title">
+          <div class="sec-title-left"><span class="sec-badge">RESEARCH</span>연구모임 현황</div>
+          <button class="toggle-all-btn" id="group-toggle-all" onclick="toggleAllGroups()">전체 펼치기</button>
+        </div>
+        <div id="group-list"></div>
+      </section>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div>
+
+      <div class="sidebar-card glass-card" id="support">
+        <div class="sc-title">활동비 지원</div>
+        <div class="support-grid">
+          <div class="sg-item"><div class="sg-label">모임별 최대</div><div class="sg-value">30만원</div></div>
+          <div class="sg-item"><div class="sg-label">급량비</div><div class="sg-value">1인 9천원/일</div></div>
+          <div class="sg-item"><div class="sg-label">도서구입비</div><div class="sg-value">실비 지원</div></div>
+          <div class="sg-item"><div class="sg-label">클라우드</div><div class="sg-value">실비 지원</div></div>
+        </div>
+        <ul style="padding-left:1.1rem;font-size:13px;color:#C8DCF0;line-height:1.9;">
+          <li>도서구입비 (실비)</li>
+          <li>클라우드 서버비용 (실비)</li>
+          <li>급량비 (1일 1인 1회 9천원 한도)</li>
+          <li style="color:#F87171;margin-top:4px;">※ 비대면 참석자 급량비 지원 X</li>
+          <li style="color:#F87171;">※ 초과근무 급량비·출장비 중복 불가</li>
+        </ul>
+        <div class="info-box">
+          📋 <strong>제출처:</strong> 담당부서 확인<br>
+          📌 <strong>방법:</strong> 온나라 '메모보고' 제출<br>
+          💡 활동관리카드와 함께 제출 권장
+        </div>
+      </div>
+
+      <div class="sidebar-card glass-card" id="schedule">
+        <div class="sc-title">활동관리카드 제출 일정</div>
+        <table class="sched-table">
+          <thead><tr><th>월</th><th>제출기한</th><th></th></tr></thead>
+          <tbody>
+            <tr><td class="month">4월</td><td>~ 5. 8.(금)</td><td><span class="tag-done">완료</span></td></tr>
+            <tr><td class="month">5월</td><td>~ 6. 5.(금)</td><td><span class="tag-active">진행중</span></td></tr>
+            <tr><td class="month">6월</td><td>~ 7. 3.(금)</td><td></td></tr>
+            <tr><td class="month">7월</td><td>~ 8. 7.(금)</td><td></td></tr>
+            <tr><td class="month">8월</td><td>결과보고서</td><td></td></tr>
+          </tbody>
+        </table>
+        <div class="warn-box">
+          ⚠ 기한 초과 시 1일당 –1점 감점<br>
+          ✉ 제목: <strong style="color:var(--gold);">순번. 자유주제정책연구모임 활동관리카드_모임명(00월)</strong>
+        </div>
+      </div>
+
+      <div class="sidebar-card glass-card">
+        <div class="sc-title">주요 일정</div>
+        <div class="timeline">
+          <div class="tl-item done">
+            <div class="tl-date">~ 2026. 4~8월</div>
+            <div class="tl-label">월 1회 이상 연구활동</div>
+          </div>
+          <div class="tl-item done">
+            <div class="tl-date">~ 2026. 9. 11.(금)</div>
+            <div class="tl-label">결과보고서 제출<span class="tl-badge" id="dday-badge">D-?</span></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">~ 2026. 9. 18.(금)</div>
+            <div class="tl-label">PPT 발표자료 제출</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">2026. 9월</div>
+            <div class="tl-label">1차 평가 (서면 70% + 정량 30%)</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">2026. 9~10월</div>
+            <div class="tl-label">2차 평가 (PPT 발표, 7분)</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">2026. 10~12월</div>
+            <div class="tl-label">우수팀 국내 선진지 벤치마킹</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-card glass-card" id="incentive">
+        <div class="sc-title">포상금 및 실적가점</div>
+        <table class="incentive-table">
+          <thead><tr><th>등급</th><th>점수</th><th>포상금</th><th>실적가점</th></tr></thead>
+          <tbody>
+            <tr><td class="rank-gold">금상</td><td>90점↑</td><td>800만원</td><td>1.0점</td></tr>
+            <tr><td class="rank-silver">은상</td><td>80점↑</td><td>500만원</td><td>0.8점</td></tr>
+            <tr><td class="rank-bronze">동상</td><td>70점↑</td><td>300만원</td><td>0.6점</td></tr>
+            <tr><td class="rank-enc">장려상</td><td>60점↑</td><td>100만원</td><td>0.4점</td></tr>
+          </tbody>
+        </table>
+        <div class="info-box" style="margin-top:.875rem;">
+          📚 상시학습 최대 30시간 인정<br>
+          ✈ 우수팀 국내 선진지 벤치마킹 (2박 3일)<br>
+          ➕ 공모사업 연계 시 +3점 가점
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div><!-- /#app -->
+
+<footer>
+  2026 화성시 자유주제 정책연구모임 &nbsp;|&nbsp; 담당: 확인 필요
+</footer>
+
+<!-- Three.js r128 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════════
+// THREE.JS SCENE (Mars + Particles)
+// ═══════════════════════════════════════════════
+(function initThree() {
+  const canvas = document.getElementById('bg-canvas');
+  const W = window.innerWidth, H = window.innerHeight;
+  const isMobile = W < 768;
+  const COUNT  = isMobile ? 350 : 750;
+  const SPREAD = 75;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setSize(W, H);
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, W / H, 0.1, 200);
+  camera.position.set(0, 0, 36);
+
+  function makeStarSprite() {
+    const c = document.createElement('canvas');
+    c.width = c.height = 64;
+    const ctx = c.getContext('2d');
+    const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+    g.addColorStop(0,    'rgba(255,255,255,1.0)');
+    g.addColorStop(0.2,  'rgba(255,255,255,0.85)');
+    g.addColorStop(0.55, 'rgba(255,255,255,0.25)');
+    g.addColorStop(1.0,  'rgba(255,255,255,0.0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, 64, 64);
+    return new THREE.CanvasTexture(c);
+  }
+
+  const positions = new Float32Array(COUNT * 3);
+  const colors    = new Float32Array(COUNT * 3);
+
+  const palette = [
+    new THREE.Color(0x2196F3),
+    new THREE.Color(0x1565C0),
+    new THREE.Color(0x42A5F5),
+    new THREE.Color(0x90CAF9),
+    new THREE.Color(0xF59E0B),
+  ];
+
+  for (let i = 0; i < COUNT; i++) {
+    positions[i*3]   = (Math.random() - 0.5) * SPREAD;
+    positions[i*3+1] = (Math.random() - 0.5) * SPREAD;
+    positions[i*3+2] = (Math.random() - 0.5) * SPREAD;
+
+    const pick = Math.random();
+    const c = pick < 0.04 ? palette[4]
+             : pick < 0.30 ? palette[3]
+             : pick < 0.55 ? palette[2]
+             : pick < 0.78 ? palette[0]
+             : palette[1];
+    colors[i*3] = c.r; colors[i*3+1] = c.g; colors[i*3+2] = c.b;
+  }
+
+  const ptGeo = new THREE.BufferGeometry();
+  ptGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  ptGeo.setAttribute('color',    new THREE.BufferAttribute(colors,    3));
+
+  const ptMat = new THREE.PointsMaterial({
+    size: isMobile ? 0.45 : 0.55,
+    map: makeStarSprite(),
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.88,
+    sizeAttenuation: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  });
+  const points = new THREE.Points(ptGeo, ptMat);
+  scene.add(points);
+
+  const lineCount = isMobile ? 50 : 130;
+  const linePts = [];
+  for (let i = 0; i < lineCount; i++) {
+    const a = Math.floor(Math.random() * COUNT) * 3;
+    const b = Math.floor(Math.random() * COUNT) * 3;
+    linePts.push(positions[a], positions[a+1], positions[a+2],
+                 positions[b], positions[b+1], positions[b+2]);
+  }
+  const lineGeo = new THREE.BufferGeometry();
+  lineGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(linePts), 3));
+  const lineMat = new THREE.LineBasicMaterial({ color: 0x2196F3, transparent: true, opacity: 0.06 });
+  const lines = new THREE.LineSegments(lineGeo, lineMat);
+  scene.add(lines);
+
+  let targetZ = 36, targetY = 0, targetX = 0;
+  const mouse = { x: 0, y: 0 };
+  let frame = 0;
+
+  window.addEventListener('scroll', () => {
+    const p = window.scrollY / Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    targetZ = 36 - p * 48;
+    targetY = p * 10;
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = (e.clientX / window.innerWidth  - 0.5) * 6;
+    mouse.y = -(e.clientY / window.innerHeight - 0.5) * 3;
+  });
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  function animate() {
+    requestAnimationFrame(animate);
+    frame++;
+
+    points.rotation.y += 0.00030;
+    points.rotation.x += 0.00010;
+    lines.rotation.y  += 0.00030;
+    lines.rotation.x  += 0.00010;
+
+    targetX = mouse.x;
+    camera.position.z += (targetZ - camera.position.z) * 0.04;
+    camera.position.y += (targetY - camera.position.y) * 0.04;
+    camera.position.x += (targetX - camera.position.x) * 0.025;
+
+    lineMat.opacity = 0.045 + Math.sin(frame * 0.018) * 0.025;
+
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+
+// ═══════════════════════════════════════════════
+// 3D TILT EFFECT
+// ═══════════════════════════════════════════════
+function initTilt() {
+  if (window.matchMedia('(hover: none)').matches) return;
+
+  document.querySelectorAll('.glass-card, .group-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width  - 0.5;
+      const y = (e.clientY - r.top)  / r.height - 0.5;
+      card.style.transition = 'transform .08s ease, box-shadow .15s ease, border-color .15s ease';
+      card.style.transform  = `perspective(700px) rotateY(${x*10}deg) rotateX(${-y*10}deg) translateZ(6px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transition = 'transform .5s ease, box-shadow .2s ease, border-color .2s ease';
+      card.style.transform  = 'perspective(700px) rotateY(0deg) rotateX(0deg) translateZ(0px)';
+    });
+  });
+}
+
+// ═══════════════════════════════════════════════
+// SCROLL FADE-IN (IntersectionObserver)
+// ═══════════════════════════════════════════════
+function observeCards() {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('in-view'), i * 80);
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.group-card, .sidebar-card').forEach(el => io.observe(el));
+}
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let NOTICES = [];
+let currentFilter = 'all';
+let searchQuery   = '';
+let noticePage    = 1;
+const PER_PAGE    = 10;
+const _loadError  = { notices: false, teams: false };
+
+// ═══════════════════════════════════════════════
+// API FETCH
+// ═══════════════════════════════════════════════
+const API_BASE = 'https://hwaseong-free-api.onrender.com';
+
+function formatDate(str) {
+  if (!str) return '';
+  try {
+    const d = new Date(str);
+    return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+  } catch { return str; }
+}
+
+async function _fetchNotices() {
+  const ctrl    = new AbortController();
+  const timeout = setTimeout(() => ctrl.abort(), 15000);
+  try {
+    const res = await fetch(API_BASE + '/api/notices?t=' + Date.now(), { signal: ctrl.signal });
+    clearTimeout(timeout);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (!Array.isArray(data)) return [];
+    return data.map(n => ({
+      id:      n.id,
+      type:    n.category === '중요' ? 'important' : n.category === '신규' ? 'new' : 'normal',
+      date:    formatDate(n.created_at),
+      title:   n.title || '',
+      summary: (n.content || '').replace(/<[^>]+>/g, '').slice(0, 60) + '…',
+      content: n.content || '',
+    }));
+  } catch {
+    clearTimeout(timeout);
+    throw new Error('failed');
+  }
+}
+
+async function loadNotices() {
+  try {
+    return await _fetchNotices();
+  } catch {
+    await new Promise(r => setTimeout(r, 2000));
+    try {
+      return await _fetchNotices();
+    } catch {
+      _loadError.notices = true;
+      return [];
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════
+// SEARCH UTILS
+// ═══════════════════════════════════════════════
+function esc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+function hi(text, q) {
+  if (!q) return text;
+  return text.replace(new RegExp(`(${esc(q)})`, 'gi'), '<mark>$1</mark>');
+}
+function getFiltered() {
+  let list = currentFilter === 'all' ? NOTICES : NOTICES.filter(n => n.type === currentFilter);
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    list = list.filter(n => n.title.toLowerCase().includes(q) || n.summary.toLowerCase().includes(q));
+  }
+  list = [...list].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+  return list;
+}
+
+// ═══════════════════════════════════════════════
+// NOTICE RENDER
+// ═══════════════════════════════════════════════
+function renderNotices() {
+  const el       = document.getElementById('notice-items');
+  const countEl  = document.getElementById('search-count');
+  const filtered = getFiltered();
+  const total    = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / PER_PAGE));
+
+  if (noticePage > totalPages) noticePage = totalPages;
+
+  if (searchQuery) {
+    countEl.style.display = 'block';
+    countEl.textContent   = `"${searchQuery}" 검색 결과 ${total}건`;
+  } else {
+    countEl.style.display = 'none';
+  }
+
+  if (!total) {
+    el.innerHTML = _loadError.notices
+      ? `<div class="no-results">🔌 서버에 연결할 수 없습니다. 잠시 후 새로고침 해주세요.</div>`
+      : searchQuery
+        ? `<div class="no-results">🔍 검색 결과가 없습니다.</div>`
+        : `<div class="no-results">등록된 공지사항이 없습니다.</div>`;
+    return;
+  }
+
+  const start  = (noticePage - 1) * PER_PAGE;
+  const paged  = filtered.slice(start, start + PER_PAGE);
+
+  const items = paged.map((n, i) => `
+    <div class="notice-item" id="ni-${n.id}" style="animation-delay:${i*.04}s" onclick="toggleNotice(${n.id})">
+      <span class="n-badge ${n.type==='important'?'b-imp':n.type==='new'?'b-new':'b-gen'}">
+        ${n.type==='important'?'중요':n.type==='new'?'신규':'일반'}
+      </span>
+      <div class="n-content">
+        <div class="n-title">${hi(n.title, searchQuery)}</div>
+        <div class="n-meta">${hi(n.summary, searchQuery)}</div>
+      </div>
+      <div class="n-date">${n.date}</div>
+      <span class="notice-arrow">▾</span>
+    </div>
+    <div class="notice-body" id="nb-${n.id}">
+      <div class="notice-body-inner">
+        <div class="nd-meta"><span>📅 ${n.date}</span><span>담당: 확인 필요</span></div>
+        <div class="nd-content">${n.content}</div>
+      </div>
+    </div>`).join('');
+
+  const pagination = totalPages <= 1 ? '' : `
+    <div class="notice-pagination">
+      <button class="page-btn" onclick="gotoNoticePage(${noticePage-1})" ${noticePage===1?'disabled':''}>‹</button>
+      ${Array.from({length:totalPages},(_,i)=>i+1).map(p=>`
+        <button class="page-btn${p===noticePage?' active':''}" onclick="gotoNoticePage(${p})">${p}</button>
+      `).join('')}
+      <button class="page-btn" onclick="gotoNoticePage(${noticePage+1})" ${noticePage===totalPages?'disabled':''}>›</button>
+    </div>`;
+
+  el.innerHTML = items + pagination;
+}
+
+function gotoNoticePage(p) {
+  const filtered   = getFiltered();
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+  if (p < 1 || p > totalPages) return;
+  noticePage = p;
+  _openNoticeId = null;
+  renderNotices();
+  document.getElementById('notice-items').scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function filterNotice(type, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = type;
+  noticePage = 1;
+  renderNotices();
+}
+
+function onSearch(val) {
+  searchQuery = val.trim();
+  noticePage  = 1;
+  document.getElementById('search-clear').classList.toggle('visible', searchQuery.length > 0);
+  renderNotices();
+}
+
+function clearSearch() {
+  const inp = document.getElementById('notice-search');
+  inp.value = '';
+  onSearch('');
+  inp.focus();
+}
+
+// ═══════════════════════════════════════════════
+// NOTICE ACCORDION
+// ═══════════════════════════════════════════════
+let _openNoticeId = null;
+
+function _openBody(body) {
+  body.classList.add('open');
+  body.style.maxHeight = body.scrollHeight + 'px';
+}
+function _closeBody(body) {
+  body.style.maxHeight = '0';
+  body.classList.remove('open');
+}
+
+function toggleNotice(id) {
+  const item = document.getElementById('ni-' + id);
+  const body = document.getElementById('nb-' + id);
+  if (!item || !body) return;
+
+  const isOpen = body.classList.contains('open');
+
+  if (_openNoticeId !== null && _openNoticeId !== id) {
+    const prevItem = document.getElementById('ni-' + _openNoticeId);
+    const prevBody = document.getElementById('nb-' + _openNoticeId);
+    if (prevItem) prevItem.classList.remove('open');
+    if (prevBody) _closeBody(prevBody);
+  }
+
+  item.classList.toggle('open', !isOpen);
+  isOpen ? _closeBody(body) : _openBody(body);
+  _openNoticeId = isOpen ? null : id;
+  _syncNoticeToggleBtn();
+}
+
+function toggleAllNotices() {
+  const bodies = document.querySelectorAll('.notice-body');
+  const items  = document.querySelectorAll('.notice-item[id^="ni-"]');
+  const anyOpen = [...bodies].some(b => b.classList.contains('open'));
+
+  bodies.forEach(b  => anyOpen ? _closeBody(b) : _openBody(b));
+  items.forEach(it  => it.classList.toggle('open', !anyOpen));
+  _openNoticeId = anyOpen ? null : -1;
+  _syncNoticeToggleBtn();
+}
+
+function _syncNoticeToggleBtn() {
+  const btn = document.getElementById('notice-toggle-all');
+  if (!btn) return;
+  const anyOpen = [...document.querySelectorAll('.notice-body')].some(b => b.classList.contains('open'));
+  btn.textContent = anyOpen ? '전체 접기' : '전체 펼치기';
+}
+
+function toggleAllGroups() {
+  const bodies = document.querySelectorAll('.gc-body');
+  const arrows = document.querySelectorAll('.gc-toggle');
+  const anyOpen = [...bodies].some(b => b.classList.contains('open'));
+
+  bodies.forEach(b => b.classList.toggle('open', !anyOpen));
+  arrows.forEach(a => a.classList.toggle('open', !anyOpen));
+
+  const btn = document.getElementById('group-toggle-all');
+  if (btn) btn.textContent = anyOpen ? '전체 펼치기' : '전체 접기';
+}
+
+// ═══════════════════════════════════════════════
+// RESEARCH GROUPS (API)
+// ═══════════════════════════════════════════════
+const BUDGET_TOTAL = 300000;
+
+async function _fetchTeams() {
+  const ctrl    = new AbortController();
+  const timeout = setTimeout(() => ctrl.abort(), 15000);
+  try {
+    const res = await fetch(API_BASE + '/api/teams?t=' + Date.now(), { signal: ctrl.signal });
+    clearTimeout(timeout);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) throw new Error('empty');
+    return data.map(t => ({
+      ...t,
+      color: t.color || '#1565C0',
+      desc:  t.desc  || '',
+    }));
+  } catch {
+    clearTimeout(timeout);
+    throw new Error('failed');
+  }
+}
+
+async function loadTeams() {
+  try {
+    return await _fetchTeams();
+  } catch {
+    await new Promise(r => setTimeout(r, 2000));
+    try {
+      return await _fetchTeams();
+    } catch {
+      _loadError.teams = true;
+      return [];
+    }
+  }
+}
+
+function progressColor(pct) {
+  if (pct >= 80) return '#F87171';
+  if (pct >= 50) return '#FBBF24';
+  return '#4ADE80';
+}
+
+function fmtMoney(n) {
+  return Number(n || 0).toLocaleString('ko-KR') + '원';
+}
+
+function cardStatusBadge(s) {
+  if (s === '완료')  return `<span class="gc-status done">✔ 완료</span>`;
+  if (s === '진행중') return `<span class="gc-status prog">◐ 진행중</span>`;
+  return `<span class="gc-status none">— 미제출</span>`;
+}
+
+const SUBMISSION_MONTHS = [
+  {key:'4',      label:'4월'},
+  {key:'5',      label:'5월'},
+  {key:'6',      label:'6월'},
+  {key:'7',      label:'7월'},
+  {key:'report', label:'결과보고서'},
+  {key:'ppt',    label:'발표PPT'},
+];
+
+function renderCardSubmissions(subs) {
+  const data = (typeof subs === 'string') ? JSON.parse(subs || '{}') : (subs || {});
+  const items = SUBMISSION_MONTHS.map(({key, label}) => {
+    const s = data[key] || '';
+    let cls, text;
+    if (s === '완료') { cls = 'done'; text = '제출완료'; }
+    else if (s && s.startsWith('지연:')) { cls = 'prog'; text = `지연(${s.split(':')[1]}일)`; }
+    else if (s === '진행중') { cls = 'prog'; text = '진행중'; }
+    else { cls = 'none'; text = '미제출'; }
+    return `<div class="cs-item">
+      <span class="cs-month">${label}</span>
+      <span class="cs-badge ${cls}">${text}</span>
+    </div>`;
+  }).join('');
+  return `<div class="card-sub-wrap">
+    <div class="card-sub-title">활동관리카드 제출 현황</div>
+    <div class="card-sub-grid">${items}</div>
+  </div>`;
+}
+
+function renderTeamCard(t) {
+  const used    = t.total_used || 0;
+  const balance = t.balance    ?? (BUDGET_TOTAL - used);
+  const pct     = Math.min(100, Math.round(used / BUDGET_TOTAL * 100));
+  const color   = progressColor(pct);
+  const tid     = t.id;
+
+  const actRows = (t.activities || []).length === 0
+    ? `<div class="gc-activity-empty">등록된 활동이 없습니다.</div>`
+    : `<div class="gc-activity-header">
+        <span>날짜</span><span>제목</span><span style="text-align:center">참석</span><span style="text-align:right">금액</span>
+       </div>
+       ${t.activities.map(a => `
+        <div class="gc-activity-item">
+          <span class="gc-act-date">${(a.activity_date||'').slice(0,10)}</span>
+          <span class="gc-act-title" title="${a.title}">${a.title}</span>
+          <span class="gc-act-attendees">${a.attendees || 0}명</span>
+          <span class="gc-act-amount">${fmtMoney(a.amount_used)}</span>
+        </div>`).join('')}`;
+
+  return `
+    <div class="group-card" id="card-${tid}">
+      <div class="gc-header" onclick="toggleGroup('${tid}')">
+        <span class="gc-num" style="background:${t.color||'#1565C0'}">${t.order_num||''}</span>
+        <div class="gc-info">
+          <div class="gc-name">${t.name}</div>
+          <div class="gc-task">${t.task||''}</div>
+        </div>
+        <span class="gc-toggle" id="arrow-${tid}">▾</span>
+      </div>
+      <div class="gc-body" id="body-${tid}">
+        ${t.desc ? `<div class="gc-desc">${t.desc}</div>` : ''}
+        ${renderCardSubmissions(t.card_submissions)}
+        <div class="gc-budget">
+          <span class="gc-budget-label">활동비 사용현황</span>
+          <div class="gc-budget-values">
+            <span class="gc-budget-used">사용 ${fmtMoney(used)}</span>
+            <span class="gc-budget-balance">잔액 ${fmtMoney(balance)}</span>
+          </div>
+        </div>
+        <div class="gc-progress-wrap">
+          <div class="gc-progress-fill" style="width:${pct}%;background:${color};"></div>
+        </div>
+        ${actRows}
+      </div>
+    </div>`;
+}
+
+function renderGroups(teams) {
+  const el = document.getElementById('group-list');
+  if (!teams || teams.length === 0) {
+    el.innerHTML = `<div class="no-results">${_loadError.teams ? '🔌 서버에 연결할 수 없습니다. 잠시 후 새로고침 해주세요.' : '등록된 모임이 없습니다.'}</div>`;
+    return;
+  }
+  el.innerHTML = teams.map(renderTeamCard).join('');
+
+  // 히어로 팀 필 업데이트
+  const pillContainer = document.getElementById('hero-group-pills');
+  if (pillContainer) {
+    pillContainer.innerHTML = teams.map(t =>
+      `<span class="hero-group-pill" onclick="goGroup(${t.id})">${t.order_num ? `${t.order_num} ` : ''}${t.name}</span>`
+    ).join('');
+  }
+}
+
+function toggleGroup(id) {
+  const body  = document.getElementById('body-' + id);
+  const arrow = document.getElementById('arrow-' + id);
+  const open  = body.classList.contains('open');
+  body.classList.toggle('open',  !open);
+  arrow.classList.toggle('open', !open);
+}
+
+function goGroup(id) {
+  document.getElementById('research').scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => {
+    if (!document.getElementById('body-' + id).classList.contains('open')) toggleGroup(id);
+  }, 450);
+}
+
+// ═══════════════════════════════════════════════
+// MOBILE MENU
+// ═══════════════════════════════════════════════
+function toggleMobileMenu() {
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+function closeMobileMenu() {
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobile-menu').classList.remove('open');
+}
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('mobile-menu');
+  const btn  = document.getElementById('hamburger');
+  if (menu.classList.contains('open') && !menu.contains(e.target) && !btn.contains(e.target))
+    closeMobileMenu();
+});
+
+function setNav(el) {
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ═══════════════════════════════════════════════
+// D-DAY
+// ═══════════════════════════════════════════════
+function updateDday() {
+  const el = document.getElementById('dday-badge');
+  if (!el) return;
+  const target = new Date('2026-09-11T00:00:00');
+  const today  = new Date();
+  today.setHours(0,0,0,0);
+  const diff = Math.round((target - today) / 86400000);
+  if (diff > 0)       el.textContent = `D-${diff}`;
+  else if (diff === 0) el.textContent = 'D-Day';
+  else                 el.textContent = `D+${Math.abs(diff)}`;
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+async function init() {
+  const [teams] = await Promise.all([loadTeams()]);
+  renderGroups(teams);
+  NOTICES = await loadNotices();
+  renderNotices();
+  initTilt();
+  observeCards();
+  updateDday();
+}
+
+init();
+</script>
+</body>
+</html>
