@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s http://localhost:8000/api/notices)",
+      "Bash(curl -s http://localhost:8000/api/teams)",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(f'{t[\\\\\"order_num\\\\\"]}. {t[\\\\\"name\\\\\"]}'\\) for t in d]\")"
+    ]
+  }
+}
