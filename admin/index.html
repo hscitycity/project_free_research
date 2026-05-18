@@ -587,7 +587,9 @@ tr:hover td{background:rgba(79,142,247,0.04);}
 <div id="toast"></div>
 
 <script>
-const API    = 'https://hwaseong-free-api.onrender.com';
+const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:8000'
+  : 'https://hwaseong-free-api.onrender.com';
 const LS_KEY = 'free_admin_key';
 
 let _key = localStorage.getItem(LS_KEY) || '';
